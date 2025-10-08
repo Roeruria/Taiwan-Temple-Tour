@@ -29,6 +29,12 @@ body {
     color: var(--text-color);
     overflow: hidden;
 }
+.flex{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
 /* 公用設定 */
 
 /* Header */
@@ -52,8 +58,8 @@ body {
         }
 
         .logo {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
         }
 
         /* 預設隱藏，在桌面版顯示 */

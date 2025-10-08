@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 基礎設置 */
+:root {
+    --primary-color: #BF4521;
+    /* 深棕色，用於文字和裝飾 */
+    --green-color: #62592C;
+    /* 紅色/橙色，用於按鈕和標籤 */
+    --background-color: #FFF4E9;
+    /* 輕米黃色背景 */
+    --light-bg: #ffffff;
+    /* 輕微亮色的背景 */
+    --border-color: #e0d9cd;
+    /* 淺邊框色 */
+    --font-family-sans: "Jomolhari", "Shippori Mincho", sans-serif;
+    --font-family-serif: "Roboto", Note Serif;
+}
+
+/* 全局樣式 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    font-family: var(--font-family-sans);
+    color: var(--primary-color);
+    line-height: 1.6;
+}
+
+a {
+    color: var(--green-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 頂部導航欄 (Header) */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--light-bg);
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.10);
+}
+
+.logo-img {
+    height: 60px;
+    width: 60px;
+}
+
+.logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.nav-links {
+    display: none;
+    /* 手機版預設隱藏 */
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.user-actions .icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.user-img {
+    width: 40px;
+    height: 40px;
+}
+
+/* 新增 user-block 讓使用者圖標與登出成一組 */
+.user-block {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* 圖標與按鈕之間的距離 */
+    background-color: var(--background-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 9999px;
+}
+
+.user-icon {
+    font-size: 1.6rem;
+    color: var(--accent-color);
+}
+
+.logout-btn {
+    color: var(--green-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+.logout-btn:hover {
+    background-color: #c44f3a;
+}
+
+/* 手機版主內容容器 */
+.mobile-wrapper {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+.mobile-main-container {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 20px 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 手機版特有樣式 */
+.member-center-title-mobile {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+/* 個人資料卡片 (手機版) */
+.profile-card-mobile {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.profile-card-mobile img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-color);
+}
+
+.profile-card-mobile p {
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+/* 手機版導航菜單 */
+.mobile-nav-menu {
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.mobile-nav-menu div {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.mobile-nav-menu div:last-child {
+    border-bottom: none;
+}
+
+.mobile-nav-menu .current-page {
+    background-color: var(--light-bg);
+    /* 收藏頁面略微高亮 */
+    border-left: 3px solid var(--accent-color);
+    padding-left: calc(1rem - 3px);
+}
+
+.mobile-nav-menu i {
+    color: var(--primary-color);
+}
+
+.mobile-nav-menu .member-zone-dropdown i.fa-chevron-down {
+    color: var(--accent-color);
+}
+
+/* 新增行程按鈕 (手機版) */
+.add-trip-btn-mobile {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 2rem;
+    background-color: var(--accent-color);
+    color: white;
+    text-align: center;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.add-trip-btn-mobile:hover {
+    background-color: #c44f3a;
+}
+
+
+/* 收藏項目卡片 (共通樣式) */
+.collection-card {
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: white;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    position: relative;
+}
+
+.card-img-container {
+    width: 100%;
+    height: 200px;
+    /* 手機版固定高度 */
+    overflow: hidden;
+    position: relative;
+}
+
+.collection-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.collection-card:hover img {
+    transform: scale(1.05);
+}
+
+.card-tags {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 5px;
+    z-index: 10;
+}
+
+.tag {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.card-content {
+    padding: 0.75rem 1rem;
+}
+
+.card-content h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.card-actions .remove-link {
+    color: var(--primary-color);
+    margin-left: 0.5rem;
+}
+
+
+/* 底部資訊 */
+.footer {
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 0.8rem;
+    color: #777;
+    background-color: var(--light-bg);
+    margin-top: 3rem;
+}
+
+.contact-info p {
+    margin: 0.2rem 0;
+}
+
+.social-links a {
+    margin-left: 1rem;
+    color: #777;
+    font-size: 1.2rem;
+}
+
+
+/* 響應式設計 (RWD): 切換到桌面佈局 */
+@media (min-width: 1024px) {
+
+    .header {
+        padding: 1.5rem 10%;
+    }
+
+    .nav-links {
+        display: flex;
+        /* 桌面版顯示導航連結 */
+        gap: 2.5rem;
+        font-size: 1.05rem;
+        font-weight: 500;
+        margin-left: 5rem;
+    }
+
+    .nav-links a:hover {
+        color: var(--accent-color);
+        text-decoration: none;
+    }
+
+    .user-actions {
+        gap: 1.5rem;
+    }
+
+    .mobile-wrapper {
+        max-width: 1200px;
+        margin: 50px auto;
+        padding: 0;
+    }
+
+    .mobile-main-container {
+        /* 桌面版不需要這個容器，移除其邊框和圓角 */
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+        box-shadow: none;
+    }
+
+    .member-center-title-mobile,
+    .profile-card-mobile,
+    .mobile-nav-menu,
+    .add-trip-btn-mobile {
+        display: none;
+        /* 隱藏手機版專屬元素 */
+    }
+
+    /* 桌面版主要佈局：兩欄 */
+    .main-content-desktop {
+        display: flex;
+        gap: 4rem;
+        padding: 0 10%;
+    }
+
+    /* 左側邊欄 */
+    .sidebar-desktop {
+        flex-basis: 250px;
+        /* 固定寬度 */
+        flex-shrink: 0;
+        padding-top: 2rem;
+        color: var(--green-color);
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+
+    .profile-desktop {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .profile-desktop img {
+        width: 108px;
+        height: 108px;
+        border-radius: 50%;
+        /* border: 2px solid var(--accent-color); */
+    }
+
+    /* 桌面版側邊導航 */
+    .sidebar-nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 21px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+    }
+
+    .sidebar-nav li a {
+        text-decoration: none;
+        display: flex;
+        padding: 0.5rem 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 0.3rem;
+    }
+
+    /* .sidebar-nav li a:hover {
+        background-color: var(--light-bg);
+    } */
+
+    .sidebar-nav .current-page a {
+        color: var(--primary-color);
+        font-weight: bold;
+    }
+
+    .member-zone {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        font-size: 0.9rem;
+        text-decoration: none;
+        padding: 0.5rem 0;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 0.3rem;
+        
+    }
+
+    .member-zone p {
+        color: #777;
+        margin: 0.5rem 0;
+    }
+
+    .member-zone a {
+        text-decoration: none;
+        display: block;
+        margin-top: 0.5rem;
+    }
+
+    /* 右側主內容區 */
+    .main-content-area {
+        flex-grow: 1;
+    }
+
+    .page-header-desktop {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+        padding-top: 1.5rem;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    .add-trip-btn-desktop {
+        background-color: var(--accent-color);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: background-color 0.3s;
+    }
+
+    .add-trip-btn-desktop:hover {
+        background-color: #c44f3a;
+        text-decoration: none;
+    }
+
+    /* 桌面版三欄網格佈局 */
+    .collection-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    .collection-card {
+        margin-bottom: 0;
+        /* 在網格中不需要額外底部間距 */
+    }
+
+    .card-img-container {
+        height: 180px;
+        /* 調整桌面版卡片圖片高度 */
+    }
+
+}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="./Member Center.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <!-- 寺廟圖標 -->
+            <a href="#"><img src="./images/logo.png" alt="寺廟標誌" class="logo-img"></a>
+        </div>
+
+        <nav class="nav-links">
+            <a href="#">規劃行程</a>
+            <a href="#">文化探索</a>
+            <a href="#">社群</a>
+            <a href="#">求詩籤</a>
+        </nav>
+
+        <div class="user-actions">
+            <!-- 搜尋圖標 (桌面版) -->
+            <span class="icon"><i class="fas fa-search"></i></span>
+
+            <!-- 使用者功能區（圖標 + 登出） -->
+            <div class="user-block">
+                <a href="#" ><img src="./images/user.png" alt="使用者照片" class="user-img"></i></a>
+                <a href="#" class="logout-btn">登出</a>
+            </div>
+        </div>
+    </header>
+</body>
+
+</html>
