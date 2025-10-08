@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣廟宇巡禮</title>
+    <!-- 引入 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset and Global Styles */
+        :root {
+            --bg-color: #FEF8F2;
+            --primary-color: #C85633;
+            --text-color: #5B4432;
+            --card-border-color: #EEDDCC;
+            --nav-link-color: #705B4A;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Noto Serif TC', serif;
+            color: var(--text-color);
+            overflow: hidden; /* 防止頁面滾動 */
+        }
+
+        /* Header */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 1.5rem;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            color: var(--primary-color);
+        }
+
+        .desktop-nav, .login-btn {
+            display: none; /* 預設隱藏，在桌面版顯示 */
+        }
+
+        .hamburger-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        /* Mobile Navigation Overlay */
+        .mobile-nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(254, 248, 242, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 99;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: translateY(-100%);
+            transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .mobile-nav-overlay.open {
+            transform: translateY(0);
+        }
+        
+        .mobile-nav-overlay nav a {
+            font-size: 2rem;
+            color: var(--nav-link-color);
+            text-decoration: none;
+            margin: 1.5rem 0;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .mobile-nav-overlay.open nav a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 為每個連結添加延遲 */
+        .mobile-nav-overlay.open nav a:nth-child(1) { transition-delay: 0.2s; }
+        .mobile-nav-overlay.open nav a:nth-child(2) { transition-delay: 0.3s; }
+        .mobile-nav-overlay.open nav a:nth-child(3) { transition-delay: 0.4s; }
+
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            z-index: 10;
+            animation: fadeIn 2s ease-out forwards;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .start-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 3rem;
+            font-size: 1.25rem;
+            font-family: 'Noto Serif TC', serif;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(200, 86, 51, 0.3);
+        }
+
+        /* Animated Background */
+        .card-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        }
+
+        .card-scroller {
+            display: flex;
+            width: fit-content;
+            flex-wrap: nowrap;
+        }
+
+        .card-scroller.animate-left {
+            animation: scrollLeft 80s linear infinite;
+        }
+
+        .card-scroller.animate-right {
+            animation: scrollRight 80s linear infinite;
+        }
+
+        .card {
+            border: 1px solid var(--card-border-color);
+            background-color: transparent;
+            border-radius: 12px;
+            padding: 1rem;
+            aspect-ratio: 2 / 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.5;
+            flex-shrink: 0;
+            width: 100px;
+            margin: 0 0.75rem;
+        }
+        
+        .card .icon {
+            width: 60%;
+            margin-bottom: 0.5rem;
+        }
+
+        .card .name {
+            font-size: 0.8rem;
+            color: var(--text-color);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scrollLeft {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        @keyframes scrollRight {
+            from { transform: translateX(-50%); }
+            to { transform: translateX(0); }
+        }
+
+        /* RWD Media Queries */
+        @media (min-width: 768px) {
+            .hamburger-btn { display: none; }
+            .mobile-nav-overlay { display: none; }
+
+            .desktop-nav {
+                display: flex;
+                align-items: center;
+                gap: 2.5rem;
+            }
+
+            .desktop-nav a {
+                text-decoration: none;
+                color: var(--nav-link-color);
+                font-weight: 500;
+                position: relative;
+            }
+             .desktop-nav a::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: -5px;
+                left: 50%;
+                background-color: var(--primary-color);
+                transition: all 0.3s ease-in-out;
+            }
+
+            .desktop-nav a:hover::after {
+                width: 100%;
+                left: 0;
+            }
+            
+            .login-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                background-color: transparent;
+                border: 1px solid var(--card-border-color);
+                padding: 0.6rem 1.2rem;
+                border-radius: 50px;
+                cursor: pointer;
+                color: var(--nav-link-color);
+                transition: background-color 0.3s, color 0.3s;
+            }
+            .login-btn:hover {
+                background-color: #fff;
+            }
+
+            .hero-title {
+                font-size: 5rem;
+            }
+
+            .card {
+                width: 120px;
+            }
+        }
+         @media (min-width: 1200px) {
+             .card {
+                width: 140px;
+            }
+         }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="#" class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.9998 4.66699L6.6665 11.3337V14.667H9.99984V29.667H30V14.667H33.3332V11.3337L19.9998 4.66699ZM19.9998 7.71699L28.8332 13.0003H11.1665L19.9998 7.71699ZM13.3332 16.3337H16.6665V26.3337H13.3332V16.3337ZM23.3332 16.3337H16.6665V26.3337H23.3332V16.3337H23.3332ZM26.6665 16.3337H23.3332V26.3337H26.6665V16.3337Z" fill="currentColor"/>
+                </svg>
+            </a>
+            <nav class="desktop-nav">
+                <a href="#">規劃行程</a>
+                <a href="#">文化探索</a>
+                <a href="#">求籤</a>
+            </nav>
+            <button class="login-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 0C7.34784 0 4.8043 1.05357 2.92893 2.92893C1.05357 4.8043 0 7.34784 0 10C0 12.6522 1.05357 15.1957 2.92893 17.0711C4.8043 18.9464 7.34784 20 10 20C12.6522 20 15.1957 18.9464 17.0711 17.0711C18.9464 15.1957 20 12.6522 20 10C20 7.34784 18.9464 4.8043 17.0711 2.92893C15.1957 1.05357 12.6522 0 10 0ZM10 4C11.3261 4 12.5979 4.52678 13.5355 5.46447C14.4732 6.40215 15 7.67392 15 9C15 9.83333 14.75 10.5917 14.25 11.275C13.75 11.9583 13.125 12.5 12.375 12.9C11.625 13.3 10.8333 13.5 10 13.5C9.16667 13.5 8.375 13.3 7.625 12.9C6.875 12.5 6.25 11.9583 5.75 11.275C5.25 10.5917 5 9.83333 5 9C5 7.67392 5.52678 6.40215 6.46447 5.46447C7.40215 4.52678 8.67392 4 10 4ZM10 18C8.5 18 7.05 17.55 5.65 16.65C4.25 15.75 3.16667 14.5 2.41667 12.9C3.16667 11.8333 4.15 11 5.36667 10.4C6.58333 9.8 7.9 9.5 9.31667 9.5C9.68333 9.5 10.0333 9.51667 10.3667 9.55C10.7 9.58333 11 9.65 11.2667 9.75C11.7 9.55 12.2 9.45 12.7667 9.45C14.2667 9.45 15.65 9.81667 16.9167 10.55C17.5833 11.5833 18 12.7667 18 14.1C18 15.3 17.5667 16.3667 16.7 17.3C15.8333 18.2333 14.8 18.75 13.6 18.85C12.4 18.95 11.2 18.5 10 18Z" fill="currentColor"/>
+                </svg>
+                <span>登入</span>
+            </button>
+            <button class="hamburger-btn">
+                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 12H21" stroke="#5B4432" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3 6H21" stroke="#5B4432" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3 18H21" stroke="#5B4432" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+    
+     <div class="mobile-nav-overlay">
+        <nav>
+            <a href="#">規劃行程</a>
+            <a href="#">文化探索</a>
+            <a href="#">求籤</a>
+        </nav>
+    </div>
+
+    <main class="hero">
+        <div class="card-background" id="card-background">
+            <div class="card-scroller animate-left" id="scroller-1"></div>
+            <div class="card-scroller animate-right" id="scroller-2"></div>
+            <div class="card-scroller animate-left" id="scroller-3"></div>
+            <div class="card-scroller animate-right" id="scroller-4"></div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">台灣廟宇<br>巡禮</h1>
+            <button class="start-btn">開始</button>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cardData = [
+                { type: 'temple', name: '' },
+                { type: 'matsu', name: 'Matsu' },
+                { type: 'temple', name: '' },
+                { type: 'citygod', name: 'City God' },
+                { type: 'temple', name: '' },
+                { type: 'villagedeity', name: 'The Village Deity' },
+                { type: 'temple', name: '' },
+                { type: 'matsu', name: 'Matsu' },
+                 { type: 'villagedeity', name: 'The Village Deity' },
+                { type: 'temple', name: '' },
+                { type: 'citygod', name: 'City God' },
+                { type: 'temple', name: '' },
+                 { type: 'matsu', name: 'Matsu' },
+                 { type: 'temple', name: '' },
+                 { type: 'villagedeity', name: 'The Village Deity' },
+                 { type: 'temple', name: '' },
+            ];
+
+            const icons = {
+                temple: `<svg class="icon" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 5L10 25V30H20V65H80V30H90V25L50 5Z" stroke="#B0C4DE" stroke-width="2"/><path d="M25 35H35V55H25V35Z" stroke="#B0C4DE" stroke-width="2"/><path d="M45 35H55V55H45V35Z" stroke="#B0C4DE" stroke-width="2"/><path d="M65 35H75V55H65V35Z" stroke="#B0C4DE" stroke-width="2"/><path d="M5 70H95" stroke="#B0C4DE" stroke-width="2"/></svg>`,
+                matsu: `<svg class="icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 30C65 30 70 45 70 55C70 70 60 85 50 85C40 85 30 70 30 55C30 45 35 30 50 30Z" stroke="#EEDDCC" stroke-width="2"/><path d="M40 50H60" stroke="#EEDDCC" stroke-width="2"/><path d="M45 60C45 60 48 65 50 65C52 65 55 60 55 60" stroke="#EEDDCC" stroke-width="2"/><circle cx="45" cy="45" r="2" fill="#EEDDCC"/><circle cx="55" cy="45" r="2" fill="#EEDDCC"/><path d="M50 10L30 20V30H70V20L50 10Z" stroke="#EEDDCC" stroke-width="2" stroke-linejoin="round"/></svg>`,
+                citygod: `<svg class="icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 35C60 35 65 45 65 55C65 65 55 80 50 80C45 80 35 65 35 55C35 45 40 35 50 35Z" stroke="#B0C4DE" stroke-width="2"/><path d="M30 30C30 20 70 20 70 30H30Z" stroke="#B0C4DE" stroke-width="2" stroke-linejoin="round"/><path d="M45 55H55" stroke="#B0C4DE" stroke-width="2"/><path d="M40 65H60" stroke="#B0C4DE" stroke-width="2"/></svg>`,
+                villagedeity: `<svg class="icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 40C58 40 62 48 62 55C62 65 55 75 50 75C45 75 38 65 38 55C38 48 42 40 50 40Z" stroke="#EEDDCC" stroke-width="2"/><path d="M35 35C35 25 65 25 65 35V40H35V35Z" stroke="#EEDDCC" stroke-width="2"/><path d="M45 55H55" stroke="#EEDDCC" stroke-width="2"/><path d="M40 65C40 65 45 68 50 68C55 68 60 65 60 65" stroke="#EEDDCC" stroke-width="2"/></svg>`,
+            };
+
+            const scrollers = document.querySelectorAll('.card-scroller');
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            function generateScrollerContent(items) {
+                return items.map(item => `
+                    <div class="card">
+                        ${icons[item.type]}
+                        <span class="name">${item.name}</span>
+                    </div>
+                `).join('');
+            }
+            
+            scrollers.forEach(scroller => {
+                const shuffledData = [...cardData];
+                shuffleArray(shuffledData);
+                const repeatedData = Array(3).fill(shuffledData).flat();
+                const content = generateScrollerContent(repeatedData);
+                scroller.innerHTML = content + content;
+            });
+            
+            // Mobile Menu Toggle
+            const hamburgerBtn = document.querySelector('.hamburger-btn');
+            const mobileNav = document.querySelector('.mobile-nav-overlay');
+
+            hamburgerBtn.addEventListener('click', () => {
+                mobileNav.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
+
